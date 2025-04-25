@@ -1,0 +1,12 @@
+Average accuracy 0.000, latency 12.27, #q: 100 - abstract_algebra
+Average accuracy 0.067, latency 15.23, #q: 135 - anatomy
+Average accuracy 0.276, latency 27.57, #q: 152 - astronomy
+Average accuracy 0.310, latency 17.67, #q: 100 - business_ethics
+Average accuracy 0.117, latency 33.28, #q: 265 - clinical_knowledge
+Average accuracy 0.111, latency 20.97, #q: 144 - college_biology
+Average accuracy 0.010, latency 18.84, #q: 100 - college_chemistry
+Average accuracy 0.140, latency 24.45, #q: 100 - college_computer_science
+Average accuracy 0.010, latency 18.32, #q: 100 - college_mathematics
+Average accuracy 0.087, latency 26.57, #q: 173 - college_medicine
+Total latency: 215.176
+Average accuracy: 0.117
