@@ -1,0 +1,141 @@
+Benchmarks (taken from SGLang MMLU benchmarks):
+python3 mmlu_benchmarks.py --nsub 10 --backend vllm --parallel 8
+
+Server Matrix:
+
+1. v0 and MLA and LMCache
+
+LMCACHE_USE_EXPERIMENTAL=True \
+LMCACHE_TRACK_USAGE=false \
+VLLM_MLA_DISABLE=0 \
+VLLM_USE_V1=0 \
+LMCACHE_CONFIG_FILE=/home/samuelshen/lmc-cpu.yaml \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1 \
+  --kv-transfer-config '{"kv_connector":"LMCacheConnector","kv_role":"kv_both","kv_parallel_size":2}'
+
+1.5. v0 and MLA and no LMCache
+
+VLLM_MLA_DISABLE=0 \
+VLLM_USE_V1=0 \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1
+
+2. v0 and dense and LMCache
+
+LMCACHE_USE_EXPERIMENTAL=True \
+LMCACHE_TRACK_USAGE=false \
+VLLM_MLA_DISABLE=1 \
+VLLM_USE_V1=0 \
+LMCACHE_CONFIG_FILE=/home/samuelshen/lmc-cpu.yaml \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1 \
+  --kv-transfer-config '{"kv_connector":"LMCacheConnector","kv_role":"kv_both","kv_parallel_size":2}'
+
+2.5 v0 and dense and no LMCache
+
+VLLM_MLA_DISABLE=1 \
+VLLM_USE_V1=0 \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1
+
+3. v1 and MLA and LMCache
+
+LMCACHE_USE_EXPERIMENTAL=True \
+LMCACHE_TRACK_USAGE=false \
+VLLM_MLA_DISABLE=0 \
+VLLM_USE_V1=1 \
+LMCACHE_CONFIG_FILE=/home/samuelshen/lmc-cpu.yaml \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1 \
+  --kv-transfer-config '{"kv_connector":"LMCacheConnector","kv_role":"kv_both","kv_parallel_size":2}'
+
+3.5 v1 and MLA and no LMCache
+
+VLLM_MLA_DISABLE=0 \
+VLLM_USE_V1=1 \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1
+
+4. v1 and dense
+
+LMCACHE_USE_EXPERIMENTAL=True \
+LMCACHE_TRACK_USAGE=false \
+VLLM_MLA_DISABLE=1 \
+VLLM_USE_V1=1 \
+LMCACHE_CONFIG_FILE=/home/samuelshen/lmc-cpu.yaml \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1 \
+  --kv-transfer-config '{"kv_connector":"LMCacheConnector","kv_role":"kv_both","kv_parallel_size":2}'
+
+
+4.5
+
+VLLM_MLA_DISABLE=1 \
+VLLM_USE_V1=1 \
+python3 -m vllm.entrypoints.openai.api_server \
+  --model /home/samuelshen/.cache/huggingface/hub/models--meta-llama--Meta-Llama-3.1-8B-Instruct/snapshots/0e9e39f249a16976918f6564b8830bc894c89659 \
+  --trust-remote-code \
+  --served-model-name vllm_cpu_offload \
+  --max-model-len 8192 \
+  --max-seq-len-to-capture 2048 \
+  --max-num-seqs 8 \
+  --gpu-memory-utilization 0.9 \
+  --host 0.0.0.0 \
+  --tensor-parallel-size 1
